@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,39 +43,51 @@ class SpecialitySDJpaServiceTest {
         assertThat(foundSpecialty).isNotNull();
 
         verify(specialtyRepository).findById(anyLong());
+    }
 
+    @Test
+    void findByIdBDDTest() {
+        Speciality speciality = new Speciality();
+
+        given(specialtyRepository.findById(1L)).willReturn(Optional.of(speciality));
+
+        Speciality foundSpecialty = service.findById(1L);
+
+        assertThat(foundSpecialty).isNotNull();
+
+        verify(specialtyRepository).findById(anyLong());
     }
 
     @Test
     void deleteById() {
-        service.deleteById(1l);
-        service.deleteById(1l);
+        service.deleteById(1L);
+        service.deleteById(1L);
 
-        verify(specialtyRepository, times(2)).deleteById(1l);
+        verify(specialtyRepository, times(2)).deleteById(1L);
     }
 
     @Test
     void deleteByIdAtLeast() {
-        service.deleteById(1l);
-        service.deleteById(1l);
+        service.deleteById(1L);
+        service.deleteById(1L);
 
-        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
+        verify(specialtyRepository, atLeastOnce()).deleteById(1L);
     }
 
     @Test
     void deleteByIdAtMost() {
-        service.deleteById(1l);
-        service.deleteById(1l);
+        service.deleteById(1L);
+        service.deleteById(1L);
 
-        verify(specialtyRepository, atMost(5)).deleteById(1l);
+        verify(specialtyRepository, atMost(5)).deleteById(1L);
     }
 
     @Test
     void deleteByIdNever() {
-        service.deleteById(1l);
-        service.deleteById(1l);
+        service.deleteById(1L);
+        service.deleteById(1L);
 
-        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
+        verify(specialtyRepository, atLeastOnce()).deleteById(1L);
 
         verify(specialtyRepository, never()).deleteById(5L);
     }
